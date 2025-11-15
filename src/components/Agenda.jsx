@@ -46,7 +46,7 @@ export default function Agenda() {
 
         <div className="md:hidden divide-y-2 divide-black/50 border-y-2 border-black/50 bg-white">
           {ITEMS.map((it, idx) => (
-            <div key={idx} className="px-4 py-5">
+            <div key={idx} className="px-4 py-5 transition-colors duration-200 ease-out hover:bg-black/5">
               <div className="flex items-center justify-between gap-3">
                 <span className="inline-flex items-center rounded-sm border-2 border-black px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-widest">{it.theme}</span>
                 <div className="text-[15px] font-semibold">{it.time}</div>
@@ -59,7 +59,7 @@ export default function Agenda() {
 
         <div className="hidden md:block">
           {ITEMS.map((it, idx) => (
-            <div key={idx} className="grid grid-cols-12 border-b-2 border-black/50 bg-white">
+            <div key={idx} className="grid grid-cols-12 border-b-2 border-black/50 bg-white transition-colors duration-200 ease-out hover:bg-black/5">
               <div className="col-span-3 flex items-center px-8 lg:px-12 py-8">
                 <span className="inline-flex items-center rounded-sm border-2 border-black px-4 py-2 text-[13px] font-medium uppercase tracking-widest">{it.theme}</span>
               </div>
