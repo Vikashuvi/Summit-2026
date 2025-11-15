@@ -9,7 +9,7 @@ export default function Hero() {
   const current = useMemo(() => IMAGES[0], [])
 
   return (
-    <section className="relative h-screen w-full bg-white text-black overflow-hidden">
+    <section className="relative h-screen w-full bg-white text-white overflow-hidden">
       {/* Video background */}
       <video
         className="absolute inset-0 h-full w-full object-cover"
@@ -20,8 +20,8 @@ export default function Hero() {
         playsInline
         poster={current}
       />
-      {/* light wash to keep text readable */}
-      <div className="absolute inset-0 bg-white/70" />
+      {/* dark wash to keep text readable */}
+      <div className="absolute inset-0 bg-black/70" />
 
       {/* Viewport frame strokes */}
       <div className="pointer-events-none absolute inset-0">
@@ -41,32 +41,34 @@ export default function Hero() {
                 <h1 className="text-[clamp(2.6rem,6vw,4.4rem)] font-semibold leading-[1.02] tracking-tight">
                   Millionaire Summit & Awards 2026
                 </h1>
-                <p className="mt-4 max-w-2xl text-[15px] text-neutral-800 leading-relaxed">
+                <p className="mt-4 max-w-2xl text-[15px] text-neutral-200 leading-relaxed">
                   Let’s Begin This Year with Some Powerful Knowledge, Valuable Connection, and Power Packed Energy…
                 </p>
                 <div className="mt-5 flex gap-6">
                   <a href="#tickets" className="group relative inline-flex items-center text-sm font-semibold">
                     <span className="relative z-10">Get Tickets</span>
-                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                   </a>
-                  <a href="#details" className="text-sm text-neutral-700 hover:text-black">Learn More</a>
+                  <a href="#apply" className="inline-flex items-center rounded-sm border-2 border-white px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white hover:text-black">
+                    Apply Now
+                  </a>
                 </div>
               </div>
 
               {/* Details card */}
               <div className="md:col-span-4">
-                <div className="rounded-sm border-2 border-black">
-                  <div className="grid grid-cols-1 divide-y-2 divide-black">
+                <div className="rounded-sm border-2 border-white">
+                  <div className="grid grid-cols-1 divide-y-2 divide-white/50">
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-widest text-neutral-600">Date</div>
+                      <div className="text-[11px] uppercase tracking-widest text-neutral-300">Date</div>
                       <div className="mt-1 font-semibold">Jan 3, 2026 · Saturday</div>
                     </div>
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-widest text-neutral-600">Time</div>
+                      <div className="text-[11px] uppercase tracking-widest text-neutral-300">Time</div>
                       <div className="mt-1 font-semibold">08:00 – 17:00 IST</div>
                     </div>
                     <div className="p-4">
-                      <div className="text-[11px] uppercase tracking-widest text-neutral-600">Venue</div>
+                      <div className="text-[11px] uppercase tracking-widest text-neutral-300">Venue</div>
                       <div className="mt-1 font-semibold">Hotel Green Park, Chennai</div>
                     </div>
                   </div>
