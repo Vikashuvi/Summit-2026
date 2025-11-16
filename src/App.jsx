@@ -9,6 +9,9 @@ import Header from './components/Header'
 import Agenda from './components/Agenda'
 import CurvedLoop from './components/ui/shadcn-io/curved-loop'
 import Footer from './components/Footer'
+import EventTheme from './components/EventTheme'
+import Sponsors from './components/Sponsors'
+import ClickSpark from './components/ClickSpark'
 
 function App() {
   useEffect(() => {
@@ -31,9 +34,10 @@ function App() {
     }
   }, [])
   return (
-    <>
+    <ClickSpark sparkColor="#000000" sparkSize={10} sparkRadius={18} sparkCount={10} duration={500} extraScale={1.1}>
       <Header />
       <Hero />
+      <EventTheme />
       <About />
       <Countdown />
       <CurvedLoop
@@ -48,8 +52,9 @@ function App() {
       />
       <WhoFor />
       <Agenda />
+      <Sponsors />
       <Footer />
-    </>
+    </ClickSpark>
   )
 }
 

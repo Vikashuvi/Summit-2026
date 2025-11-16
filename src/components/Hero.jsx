@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import heroVideo from '../assets/Summit.mp4'
 
 // Replace with your final hero image(s)
 const IMAGES = [
@@ -7,21 +8,37 @@ const IMAGES = [
 
 export default function Hero() {
   const current = useMemo(() => IMAGES[0], [])
+  const [failed, setFailed] = useState(false)
 
   return (
     <section className="relative h-screen w-full bg-white text-white overflow-hidden">
       {/* Video background */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        src="https://cdn.prod.website-files.com/669502db3ee6c10966674f85%2F6867a8767daac3673de426dd_TS%20Bangalore%2022_2-transcode.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={current}
-      />
+      {!failed ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          crossOrigin="anonymous"
+          poster={current}
+          onError={() => setFailed(true)}
+        >
+          <source
+            src={heroVideo}
+            type="video/mp4"
+          />
+        </video>
+      ) : (
+        <img
+          className="absolute inset-0 h-full w-full object-cover"
+          src={current}
+          alt="Hero background"
+        />
+      )}
       {/* dark wash to keep text readable */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-black/80" />
 
       {/* Viewport frame strokes */}
       <div className="pointer-events-none absolute inset-0">
@@ -45,10 +62,6 @@ export default function Hero() {
                   Let’s Begin This Year with Some Powerful Knowledge, Valuable Connection, and Power Packed Energy…
                 </p>
                 <div className="mt-5 flex gap-6">
-                  <a href="#tickets" className="group relative inline-flex items-center text-sm font-semibold">
-                    <span className="relative z-10">Get Tickets</span>
-                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-                  </a>
                   <a href="#apply" className="inline-flex items-center rounded-sm border-2 border-white px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white hover:text-black">
                     Apply Now
                   </a>

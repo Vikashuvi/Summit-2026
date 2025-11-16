@@ -26,8 +26,8 @@ const CurvedLoop = ({
   const pathRef = useRef(null);
   const [spacing, setSpacing] = useState(0);
   const [offset, setOffset] = useState(0);
-  const uid = useId();
-  const pathId = `curve-${uid}`;
+  const rawId = useId();
+  const pathId = useMemo(() => `curve-${String(rawId).replace(/[^a-zA-Z0-9-_]/g, '')}` , [rawId]);
   const baseY = 40;
   const effectiveCurve = isDesktop ? curveAmount : 60;
   const pathD = useMemo(() => (
@@ -93,7 +93,6 @@ const CurvedLoop = ({
         }
         
         textPathRef.current.setAttribute('startOffset', newOffset + 'px');
-        setOffset(newOffset);
       }
       animationRef.current = requestAnimationFrame(step);
     };
@@ -129,7 +128,6 @@ const CurvedLoop = ({
     if (newOffset >= wrapPoint) newOffset -= wrapPoint;
     
     textPathRef.current.setAttribute('startOffset', newOffset + 'px');
-    setOffset(newOffset);
   };
 
   const endDrag = () => {
@@ -170,6 +168,7 @@ const CurvedLoop = ({
             <textPath
               ref={textPathRef}
               href={`#${pathId}`}
+              xlinkHref={`#${pathId}`}
               startOffset={offset + 'px'}
               xmlSpace="preserve">
               {totalText}

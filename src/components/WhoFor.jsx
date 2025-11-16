@@ -12,10 +12,10 @@ export default function WhoFor() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-12 items-stretch">
         {/* Lead blurb */}
-        <div className="md:col-span-5">
-          <div className="rounded-md border-2 border-black bg-white p-6 md:p-8">
+        <div className="md:col-span-5 h-full">
+          <div className="rounded-md border-2 border-black bg-white p-6 md:p-8 h-full flex flex-col">
             <div className="inline-flex rounded-sm border-2 border-black px-3 py-1 text-[12px] font-semibold uppercase tracking-widest">Who is this for?</div>
             <ul className="mt-4 space-y-3 text-[clamp(0.95rem,1.4vw,1.05rem)] leading-relaxed text-neutral-800">
               <li className="flex items-start gap-3"><span className="mt-2 h-2 w-2 flex-none rounded-full bg-black" /><span>Founders and owners seeking fresh strategies and high‑value connections</span></li>
