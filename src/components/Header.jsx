@@ -27,6 +27,16 @@ export default function Header() {
                   <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                 </a>
               </li>
+              <li>
+                <a href="#sponsors" className="group relative inline-flex items-center text-[12px] no-underline text-black">
+                  <span className="relative z-10">Sponsors</span>
+                  <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-black origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                </a>
+              </li>
+              <li>
+                <a href="#tickets" className="inline-flex items-center rounded-sm border-2 border-black px-3 py-1 text-[12px] no-underline text-black hover:bg-black hover:text-white transition-colors">
+                  Apply Now                </a>
+              </li>
             </ul>
           </nav>
         </div>
