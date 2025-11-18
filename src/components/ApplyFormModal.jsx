@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7Jr_sSHzn13TTmKqbNlA_a01eWaGNiWvyKaksTmDttw_56CiM8NZlYtXb5E7_W70-5Q/exec'
+const RAZORPAY_AMOUNT = 19
+const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
 export default function ApplyFormModal({ open, onClose }) {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ export default function ApplyFormModal({ open, onClose }) {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('')
 
   if (!open) return null
 
@@ -25,62 +28,131 @@ export default function ApplyFormModal({ open, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     console.log('=== FORM SUBMISSION STARTED ===')
     console.log('Form data:', formData)
-    
+
     setIsSubmitting(true)
     setMessage('')
+    setMessageType('')
 
     try {
-      // Create URLSearchParams for form data
-      const params = new URLSearchParams()
-      params.append('name', formData.name)
-      params.append('email', formData.email)
-      params.append('phone', formData.phone)
-      params.append('company', formData.company)
-      params.append('designation', formData.designation)
+      if (!window.Razorpay) {
+        throw new Error('Razorpay script not loaded')
+      }
 
-      console.log('Sending to:', SCRIPT_URL)
-      console.log('Params:', params.toString())
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      const orderUrl = isLocal ? 'http://localhost:5000/create-order' : '/api/create-order'
 
-      const response = await fetch(SCRIPT_URL, {
+      const orderResponse = await fetch(orderUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: params.toString()
+        body: JSON.stringify({ amount: RAZORPAY_AMOUNT })
       })
 
-      console.log('Response received:', response.status, response.statusText)
-
-      if (response.ok) {
-        const result = await response.text()
-        console.log('Response text:', result)
-        
-        setMessage('✅ Application submitted successfully!')
-        
-        // Clear form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          designation: ''
-        })
-        
-        // Close modal after 2 seconds
-        setTimeout(() => {
-          onClose()
-          setMessage('')
-        }, 2000)
-      } else {
-        throw new Error(`Server error: ${response.status}`)
+      if (!orderResponse.ok) {
+        throw new Error('Failed to create payment order')
       }
+
+      const orderData = await orderResponse.json()
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'Millionaire Summit',
+        description: 'Summit Ticket',
+        order_id: orderData.orderId,
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        handler: async function (paymentResponse) {
+          try {
+            const verifyUrl = isLocal ? 'http://localhost:5000/verify-payment' : '/api/verify-payment'
+
+            const verifyResponse = await fetch(verifyUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_order_id: paymentResponse.razorpay_order_id,
+                razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                razorpay_signature: paymentResponse.razorpay_signature,
+              })
+            })
+
+            const verifyData = await verifyResponse.json()
+
+            if (!verifyResponse.ok || !verifyData.valid) {
+              throw new Error('Payment verification failed')
+            }
+
+            const params = new URLSearchParams()
+            params.append('name', formData.name)
+            params.append('email', formData.email)
+            params.append('phone', formData.phone)
+            params.append('company', formData.company)
+            params.append('designation', formData.designation)
+
+            console.log('Sending to:', SCRIPT_URL)
+            console.log('Params:', params.toString())
+
+            const sheetResponse = await fetch(SCRIPT_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: params.toString()
+            })
+
+            console.log('Response received:', sheetResponse.status, sheetResponse.statusText)
+
+            if (!sheetResponse.ok) {
+              throw new Error(`Server error: ${sheetResponse.status}`)
+            }
+
+            const result = await sheetResponse.text()
+            console.log('Response text:', result)
+            
+            setMessage('Application submitted successfully!')
+            setMessageType('success')
+            
+            // Clear form
+            setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              company: '',
+              designation: ''
+            })
+          } catch (error) {
+            console.error('Post-payment error:', error)
+            setMessage(`Error: ${error.message}`)
+            setMessageType('error')
+          } finally {
+            setIsSubmitting(false)
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsSubmitting(false)
+            setMessage('Payment cancelled')
+            setMessageType('info')
+          },
+        },
+      }
+
+      const rzp = new window.Razorpay(options)
+      rzp.open()
     } catch (error) {
       console.error('Submission error:', error)
-      setMessage(`❌ Error: ${error.message}`)
-    } finally {
+      setMessage(`Error: ${error.message}`)
+      setMessageType('error')
       setIsSubmitting(false)
     }
   }
@@ -183,7 +255,15 @@ export default function ApplyFormModal({ open, onClose }) {
           </button>
 
           {message && (
-            <div className="mt-3 text-center text-[11px] font-medium">
+            <div
+              className={`mt-3 text-center text-[11px] font-medium px-3 py-2 rounded-sm border-2 ${
+                messageType === 'success'
+                  ? 'border-green-600 text-green-700 bg-green-50'
+                  : messageType === 'error'
+                  ? 'border-red-600 text-red-700 bg-red-50'
+                  : 'border-yellow-500 text-yellow-700 bg-yellow-50'
+              }`}
+            >
               {message}
             </div>
           )}
