@@ -1,6 +1,12 @@
+import { useState } from 'react'
+import ApplyFormModal from './ApplyFormModal'
+
 export default function Footer() {
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
+
   return (
-    <footer className="mt-20 border-t-2 border-white bg-black text-white">
+    <>
+      <footer className="mt-20 border-t-2 border-white bg-black text-white">
       <div className="mx-auto max-w-6xl px-6 py-8 md:px-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:items-start">
           <div className="md:col-span-5">
@@ -22,7 +28,19 @@ export default function Footer() {
                   <li><a href="#who-for" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Who For</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#agenda" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Agenda</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#sponsors" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Sponsors</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
-                  <li><a href="#tickets" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Get Tickets</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
+                  <li>
+                    <a
+                      href="#tickets"
+                      className="group relative inline-flex items-center text-white no-underline"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setIsApplyModalOpen(true)
+                      }}
+                    >
+                      <span className="relative z-10">Apply Now</span>
+                      <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div>
@@ -36,7 +54,19 @@ export default function Footer() {
               <div>
                 <div className="text-[12px] font-semibold uppercase tracking-widest">Connect</div>
                 <ul className="mt-3 space-y-2 text-[13px]">
-                  <li><a href="#tickets" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Get Tickets</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
+                  <li>
+                    <a
+                      href="#tickets"
+                      className="group relative inline-flex items-center text-white no-underline"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setIsApplyModalOpen(true)
+                      }}
+                    >
+                      <span className="relative z-10">Apply Now</span>
+                      <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                    </a>
+                  </li>
                   <li><a href="#details" className="text-neutral-300 hover:text-white">Details</a></li>
                 </ul>
               </div>
@@ -52,6 +82,8 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+      </footer>
+      <ApplyFormModal open={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} />
+    </>
   )
 }

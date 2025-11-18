@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import './App.css'
 import Hero from './components/Hero'
@@ -12,8 +12,13 @@ import Footer from './components/Footer'
 import EventTheme from './components/EventTheme'
 import Sponsors from './components/Sponsors'
 import ClickSpark from './components/ClickSpark'
+import ApplyFormModal from './components/ApplyFormModal'
+import { FaTicketAlt } from 'react-icons/fa'
 
 function App() {
+  const [isGlobalApplyOpen, setIsGlobalApplyOpen] = useState(false)
+  const [isBadgeExpanded, setIsBadgeExpanded] = useState(false)
+
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.1,
@@ -41,14 +46,56 @@ function App() {
     }
     document.addEventListener('click', handleAnchorClick)
 
+    let peekTimeout
+    const SHOW_DURATION = 5000
+    const HIDE_DURATION = 5000
+
+    const peek = () => {
+      setIsBadgeExpanded(true)
+      peekTimeout = setTimeout(() => {
+        setIsBadgeExpanded(false)
+      }, SHOW_DURATION)
+    }
+
+    // initial peek
+    peek()
+    const intervalId = setInterval(peek, SHOW_DURATION + HIDE_DURATION)
+
     return () => {
       cancelAnimationFrame(rafId)
       lenis.destroy()
        document.removeEventListener('click', handleAnchorClick)
+      clearInterval(intervalId)
+      if (peekTimeout) clearTimeout(peekTimeout)
     }
   }, [])
   return (
     <ClickSpark sparkColor="#000000" sparkSize={10} sparkRadius={18} sparkCount={10} duration={500} extraScale={1.1}>
+      {/* Global floating Apply badge: red ticket container on right edge */}
+      <div
+        className={`fixed right-0 top-20 z-50 transform transition-transform duration-500 ${
+          // When collapsed, slide part of the pill off-screen but keep the ticket icon fully visible
+          isBadgeExpanded ? 'translate-x-0' : 'translate-x-[69%]'
+        }`}
+        onMouseEnter={() => setIsBadgeExpanded(true)}
+        onMouseLeave={() => setIsBadgeExpanded(false)}
+      >
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 rounded-l-full border-2 border-red-600 bg-red-500 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-white shadow-md hover:bg-red-600 transition-colors"
+          aria-label="Apply Now"
+          onClick={() => {
+            setIsGlobalApplyOpen(true)
+            setIsBadgeExpanded(true)
+          }}
+        >
+          <span className="text-lg leading-none">
+            <FaTicketAlt />
+          </span>
+          <span>Apply Now</span>
+        </button>
+      </div>
+
       <Header />
       <Hero />
       <EventTheme />
@@ -68,6 +115,8 @@ function App() {
       <Agenda />
       <Sponsors />
       <Footer />
+
+      <ApplyFormModal open={isGlobalApplyOpen} onClose={() => setIsGlobalApplyOpen(false)} />
     </ClickSpark>
   )
 }
