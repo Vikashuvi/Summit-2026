@@ -103,9 +103,23 @@ export default function Tickets({ onApplyClick }) {
               <div className="mt-4 flex items-baseline gap-2">
                 <div className="text-[1.9rem] font-semibold tracking-tight text-black">{pass.price}</div>
                 {pass.note && (
-                  <span className="text-[11px] uppercase tracking-widest text-neutral-600">{pass.note}</span>
+                  <span
+                    className={`text-[11px] uppercase tracking-widest ${
+                      isEarlyBird && isEarlyBirdActive
+                        ? 'font-semibold text-neutral-900'
+                        : 'text-neutral-600'
+                    }`}
+                  >
+                    {isEarlyBird && isEarlyBirdActive ? 'TILL 30TH NOVEMBER' : pass.note}
+                  </span>
                 )}
               </div>
+
+              {isLockedStandard && (
+                <div className="mt-1 text-[11px] uppercase tracking-widest text-neutral-500">
+                  Available from 1st December
+                </div>
+              )}
 
               <ul className="mt-5 space-y-2 text-[1.02rem] leading-relaxed text-neutral-800">
                 {pass.features.map((feature) => (
@@ -132,7 +146,7 @@ export default function Tickets({ onApplyClick }) {
                       : 'border-black bg-black text-white hover:bg-white hover:text-black'
                   }`}
                 >
-                  {isEnded ? 'Offer Ended' : isLockedStandard ? 'Available from 1 December' : 'Book Now'}
+                  {isEnded ? 'Offer Ended' : isLockedStandard ? 'Available from 1st December' : 'Book Now'}
                 </button>
               </div>
             </article>

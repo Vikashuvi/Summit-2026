@@ -46,7 +46,7 @@ app.post('/create-order', async (req, res) => {
         return res.status(400).json({ error: 'Early Bird offer has ended' })
       }
       if (ticketType === 'standard-pass' && now <= EARLY_BIRD_DEADLINE) {
-        return res.status(400).json({ error: 'Standard Pass available from 1 December' })
+        return res.status(400).json({ error: 'Standard Pass available from 1st December' })
       }
       const ticketAmount = TICKET_PRICING[ticketType]
       if (!ticketAmount) {
