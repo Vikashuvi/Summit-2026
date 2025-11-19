@@ -19,6 +19,7 @@ import { FaTicketAlt } from 'react-icons/fa'
 function App() {
   const [isGlobalApplyOpen, setIsGlobalApplyOpen] = useState(false)
   const [isBadgeExpanded, setIsBadgeExpanded] = useState(false)
+  const [selectedTicket, setSelectedTicket] = useState(null)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -86,6 +87,7 @@ function App() {
           className="inline-flex items-center gap-2 rounded-l-full border-2 border-red-600 bg-red-500 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-white shadow-md hover:bg-red-600 transition-colors"
           aria-label="Apply Now"
           onClick={() => {
+            setSelectedTicket(null)
             setIsGlobalApplyOpen(true)
             setIsBadgeExpanded(true)
           }}
@@ -114,11 +116,20 @@ function App() {
       />
       <WhoFor />
       <Agenda />
-      <Tickets onApplyClick={() => setIsGlobalApplyOpen(true)} />
+      <Tickets
+        onApplyClick={(ticketId) => {
+          setSelectedTicket(ticketId)
+          setIsGlobalApplyOpen(true)
+        }}
+      />
       <Sponsors />
       <Footer />
 
-      <ApplyFormModal open={isGlobalApplyOpen} onClose={() => setIsGlobalApplyOpen(false)} />
+      <ApplyFormModal
+        open={isGlobalApplyOpen}
+        onClose={() => setIsGlobalApplyOpen(false)}
+        ticketType={selectedTicket}
+      />
     </ClickSpark>
   )
 }

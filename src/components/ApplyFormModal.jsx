@@ -1,10 +1,20 @@
 import { useState } from 'react'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7Jr_sSHzn13TTmKqbNlA_a01eWaGNiWvyKaksTmDttw_56CiM8NZlYtXb5E7_W70-5Q/exec'
-const RAZORPAY_AMOUNT = 19
+const TICKET_LABELS = {
+  'early-bird': 'Early Bird Pass',
+  'standard-pass': 'Standard Pass',
+  'vip-pass': 'VIP Pass',
+}
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
-export default function ApplyFormModal({ open, onClose }) {
+const EARLY_BIRD_DEADLINE = new Date('2025-11-30T23:59:59+05:30')
+
+export default function ApplyFormModal({ open, onClose, ticketType }) {
+  const now = new Date()
+  const defaultTicket = now <= EARLY_BIRD_DEADLINE ? 'early-bird' : 'standard-pass'
+  const selectedTicketType = ticketType || defaultTicket
+  const selectedTicketLabel = TICKET_LABELS[selectedTicketType] || 'Summit Ticket'
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,6 +46,9 @@ export default function ApplyFormModal({ open, onClose }) {
     setMessage('')
     setMessageType('')
 
+    let paidAmount = null
+    let paidCurrency = 'INR'
+
     try {
       if (!window.Razorpay) {
         throw new Error('Razorpay script not loaded')
@@ -49,7 +62,7 @@ export default function ApplyFormModal({ open, onClose }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: RAZORPAY_AMOUNT })
+        body: JSON.stringify({ ticketType: selectedTicketType })
       })
 
       if (!orderResponse.ok) {
@@ -58,12 +71,19 @@ export default function ApplyFormModal({ open, onClose }) {
 
       const orderData = await orderResponse.json()
 
+      if (typeof orderData.amount === 'number') {
+        paidAmount = orderData.amount / 100 // convert paise -> rupees
+      }
+      if (orderData.currency) {
+        paidCurrency = orderData.currency
+      }
+
       const options = {
         key: RAZORPAY_KEY_ID,
         amount: orderData.amount,
         currency: orderData.currency,
         name: 'Millionaire Summit',
-        description: 'Summit Ticket',
+        description: selectedTicketLabel,
         order_id: orderData.orderId,
         prefill: {
           name: formData.name,
@@ -98,6 +118,12 @@ export default function ApplyFormModal({ open, onClose }) {
             params.append('phone', formData.phone)
             params.append('company', formData.company)
             params.append('designation', formData.designation)
+            if (paidAmount != null) {
+              params.append('amount', String(paidAmount))
+              params.append('currency', paidCurrency)
+            }
+            params.append('ticketType', selectedTicketType)
+            params.append('ticketLabel', selectedTicketLabel)
 
             console.log('Sending to:', SCRIPT_URL)
             console.log('Params:', params.toString())

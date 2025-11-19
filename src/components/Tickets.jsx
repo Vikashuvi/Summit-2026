@@ -1,5 +1,9 @@
 export default function Tickets({ onApplyClick }) {
-  const passes = [
+  const EARLY_BIRD_DEADLINE = new Date('2025-11-30T23:59:59+05:30')
+  const now = new Date()
+  const isEarlyBirdActive = now <= EARLY_BIRD_DEADLINE
+
+  const allPasses = [
     {
       id: 'early-bird',
       label: 'LIMITED TIME',
@@ -42,6 +46,8 @@ export default function Tickets({ onApplyClick }) {
     },
   ]
 
+  const passes = allPasses
+
   return (
     <section
       id="tickets"
@@ -55,6 +61,11 @@ export default function Tickets({ onApplyClick }) {
           <h2 className="mt-2 text-[clamp(2rem,4vw,2.6rem)] font-semibold tracking-tight text-black">
             Choose your pass
           </h2>
+          <p className="mt-2 text-[0.85rem] uppercase tracking-[0.2em] text-neutral-600">
+            {isEarlyBirdActive
+              ? 'Early Bird pricing available until 30 November'
+              : 'Early Bird is sold out · Current pricing starts at 5,000 INR'}
+          </p>
         </div>
         <p className="max-w-md text-[1.05rem] leading-relaxed text-neutral-700">
           Join us for an unforgettable summit designed for ambitious founders and leaders. Pick the pass that best
@@ -63,19 +74,29 @@ export default function Tickets({ onApplyClick }) {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {passes.map((pass) => (
-          <article
-            key={pass.id}
-            className={`group relative flex h-full flex-col justify-between rounded-md border-2 border-black bg-white p-6 md:p-7 transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_0px_0px_#000] ${
-              pass.featured ? 'bg-neutral-50' : ''
-            }`}
-          >
-            <div>
-              {pass.label && (
-                <div className="mb-4 inline-flex rounded-full border-2 border-black bg-black px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-white">
-                  {pass.label}
-                </div>
-              )}
+        {passes.map((pass) => {
+          const isEarlyBird = pass.id === 'early-bird'
+          const isStandard = pass.id === 'standard-pass'
+          const isEnded = isEarlyBird && !isEarlyBirdActive
+          const isLockedStandard = isStandard && isEarlyBirdActive
+
+          return (
+            <article
+              key={pass.id}
+              className={`group relative flex h-full flex-col justify-between rounded-md border-2 border-black bg-white p-6 md:p-7 transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_0px_0px_#000] ${
+                pass.featured ? 'bg-neutral-50' : ''
+              } ${isEnded ? 'opacity-80' : ''}`}
+            >
+              <div>
+                {pass.label && (
+                  <div
+                    className={`mb-4 inline-flex rounded-full border-2 border-black px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] ${
+                      isEnded ? 'bg-neutral-200 text-neutral-700 border-neutral-500' : 'bg-black text-white'
+                    }`}
+                  >
+                    {isEnded ? 'SOLD OUT' : pass.label}
+                  </div>
+                )}
 
               <h3 className="text-[1.2rem] font-semibold tracking-tight text-black">{pass.name}</h3>
 
@@ -96,17 +117,27 @@ export default function Tickets({ onApplyClick }) {
               </ul>
             </div>
 
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => onApplyClick && onApplyClick()}
-                className="inline-flex w-full items-center justify-center rounded-sm border-2 border-black bg-black px-4 py-2 text-[12px] font-semibold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
-              >
-                Book Now
-              </button>
-            </div>
-          </article>
-        ))}
+              <div className="mt-6">
+                <button
+                  type="button"
+                  disabled={isEnded || isLockedStandard}
+                  onClick={() => {
+                    if (!isEnded && !isLockedStandard && onApplyClick) {
+                      onApplyClick(pass.id)
+                    }
+                  }}
+                  className={`inline-flex w-full items-center justify-center rounded-sm border-2 px-4 py-2 text-[12px] font-semibold uppercase tracking-widest transition-colors duration-300 ${
+                    isEnded || isLockedStandard
+                      ? 'border-neutral-400 bg-neutral-200 text-neutral-500 cursor-not-allowed'
+                      : 'border-black bg-black text-white hover:bg-white hover:text-black'
+                  }`}
+                >
+                  {isEnded ? 'Offer Ended' : isLockedStandard ? 'Available from 1 December' : 'Book Now'}
+                </button>
+              </div>
+            </article>
+          )
+        })}
       </div>
     </section>
   )
