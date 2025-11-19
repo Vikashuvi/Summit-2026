@@ -82,13 +82,11 @@ function App() {
         onMouseEnter={() => setIsBadgeExpanded(true)}
         onMouseLeave={() => setIsBadgeExpanded(false)}
       >
-        <button
-          type="button"
-          className="inline-flex items-center gap-2 rounded-l-full border-2 border-red-600 bg-red-500 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-white shadow-md hover:bg-red-600 transition-colors"
+        <a
+          href="#tickets"
+          className="inline-flex items-center gap-2 rounded-l-full border-2 border-red-600 bg-red-500 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-white shadow-md hover:bg-red-600 transition-colors no-underline"
           aria-label="Apply Now"
           onClick={() => {
-            setSelectedTicket(null)
-            setIsGlobalApplyOpen(true)
             setIsBadgeExpanded(true)
           }}
         >
@@ -96,7 +94,7 @@ function App() {
             <FaTicketAlt />
           </span>
           <span>Apply Now</span>
-        </button>
+        </a>
       </div>
 
       <Header />

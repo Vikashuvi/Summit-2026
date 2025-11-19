@@ -6,6 +6,12 @@ const TICKET_LABELS = {
   'standard-pass': 'Standard Pass',
   'vip-pass': 'VIP Pass',
 }
+
+const TICKET_PRICES = {
+  'early-bird': '3,500 INR',
+  'standard-pass': '5,000 INR',
+  'vip-pass': '10,000 INR',
+}
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
 const EARLY_BIRD_DEADLINE = new Date('2025-11-30T23:59:59+05:30')
@@ -15,6 +21,7 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
   const defaultTicket = now <= EARLY_BIRD_DEADLINE ? 'early-bird' : 'standard-pass'
   const selectedTicketType = ticketType || defaultTicket
   const selectedTicketLabel = TICKET_LABELS[selectedTicketType] || 'Summit Ticket'
+  const selectedTicketPrice = TICKET_PRICES[selectedTicketType] || ''
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,6 +30,7 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
     designation: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [agreedToPay, setAgreedToPay] = useState(false)
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
 
@@ -156,6 +164,7 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
               company: '',
               designation: ''
             })
+            setAgreedToPay(false)
           } catch (error) {
             console.error('Post-payment error:', error)
             setMessage(`Error: ${error.message}`)
@@ -188,7 +197,7 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
       <div className="relative w-full max-w-md rounded-sm border-2 border-black bg-white px-6 py-5 text-black shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
         
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <div>
             <span className="inline-block rounded-sm border-2 border-black px-2 py-0.5 text-[10px] uppercase tracking-widest">
               Apply Now
@@ -202,6 +211,12 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
           >
             ✕
           </button>
+        </div>
+
+        {/* Selected ticket summary */}
+        <div className="mb-4 rounded-sm border-2 border-dashed border-black px-3 py-2 text-[11px] uppercase tracking-widest flex items-center justify-between">
+          <span className="mr-3">{selectedTicketLabel}</span>
+          {selectedTicketPrice && <span className="font-semibold">{selectedTicketPrice}</span>}
         </div>
 
         {/* Form */}
@@ -272,12 +287,25 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
             />
           </div>
 
+          <div className="mt-3 flex items-start gap-2 text-[11px] leading-snug">
+            <input
+              id="agree-to-pay"
+              type="checkbox"
+              checked={agreedToPay}
+              onChange={(e) => setAgreedToPay(e.target.checked)}
+              className="mt-0.5 h-3.5 w-3.5 rounded-sm border-2 border-black text-black focus:ring-0"
+            />
+            <label htmlFor="agree-to-pay" className="cursor-pointer select-none">
+              I am willing to pay the applicable ticket fee for this event.
+            </label>
+          </div>
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !agreedToPay}
             className="mt-4 inline-flex w-full items-center justify-center rounded-sm border-2 border-black bg-black px-3 py-2 text-[12px] font-semibold text-white hover:bg-white hover:text-black transition-colors disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Application'}
+            {isSubmitting ? 'Processing...' : 'Pay Now'}
           </button>
 
           {message && (

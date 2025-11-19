@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import ApplyFormModal from './ApplyFormModal'
 import heroVideo from '../assets/Summit.mp4'
 
 // Replace with your final hero image(s)
@@ -10,7 +9,6 @@ const IMAGES = [
 export default function Hero() {
   const current = useMemo(() => IMAGES[0], [])
   const [failed, setFailed] = useState(false)
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
 
   return (
     <section className="relative h-screen w-full bg-white text-white overflow-hidden">
@@ -65,12 +63,8 @@ export default function Hero() {
                 </p>
                 <div className="mt-5 flex gap-6">
                   <a
-                    href="#apply"
+                    href="#tickets"
                     className="inline-flex items-center rounded-sm border-2 border-white px-4 py-2 text-sm font-semibold text-white transition-colors duration-300 hover:bg-white hover:text-black"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setIsApplyModalOpen(true)
-                    }}
                   >
                     Apply Now
                   </a>
@@ -100,7 +94,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-      <ApplyFormModal open={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} />
     </section>
   )
 }

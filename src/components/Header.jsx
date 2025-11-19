@@ -1,8 +1,4 @@
-import { useState } from 'react'
-import ApplyFormModal from './ApplyFormModal'
-
 export default function Header() {
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
 
   return (
     <>
@@ -43,10 +39,6 @@ export default function Header() {
                   <a
                     href="#tickets"
                     className="inline-flex items-center rounded-sm border-2 border-black px-3 py-1 text-[13px] no-underline text-black hover:bg-black hover:text-white transition-colors"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      setIsApplyModalOpen(true)
-                    }}
                   >
                     Apply Now
                   </a>
@@ -56,8 +48,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-
-      <ApplyFormModal open={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} />
     </>
   )
 }

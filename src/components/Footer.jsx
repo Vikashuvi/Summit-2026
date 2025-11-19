@@ -1,8 +1,4 @@
-import { useState } from 'react'
-import ApplyFormModal from './ApplyFormModal'
-
 export default function Footer() {
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
 
   return (
     <>
@@ -32,10 +28,6 @@ export default function Footer() {
                     <a
                       href="#tickets"
                       className="group relative inline-flex items-center text-white no-underline"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setIsApplyModalOpen(true)
-                      }}
                     >
                       <span className="relative z-10">Apply Now</span>
                       <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
@@ -58,10 +50,6 @@ export default function Footer() {
                     <a
                       href="#tickets"
                       className="group relative inline-flex items-center text-white no-underline"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setIsApplyModalOpen(true)
-                      }}
                     >
                       <span className="relative z-10">Apply Now</span>
                       <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
@@ -83,7 +71,6 @@ export default function Footer() {
         </div>
       </div>
       </footer>
-      <ApplyFormModal open={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} />
     </>
   )
 }
