@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7Jr_sSHzn13TTmKqbNlA_a01eWaGNiWvyKaksTmDttw_56CiM8NZlYtXb5E7_W70-5Q/exec'
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4eKdTrTSWQJNlHh3kIocSERdnRtLzmQj_19PEKeyGxKU66D6FZhxiVdGliHfd9O7uVg/exec'
 const TICKET_LABELS = {
   'early-bird': 'Early Bird Pass',
   'standard-pass': 'Standard Pass',
