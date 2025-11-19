@@ -45,7 +45,7 @@ export default function EventTheme() {
                         </h3>
                       </div>
                     </div>
-                    <div className="md:col-span-6 md:ml-auto md:text-right md:justify-self-end md:max-w-3xl text-[clamp(0.98rem,1.2vw,1.05rem)] leading-relaxed text-neutral-800">
+                    <div className="md:col-span-6 md:ml-auto md:text-right md:justify-self-end md:max-w-3xl text-[clamp(1.02rem,1.4vw,1.12rem)] leading-relaxed text-neutral-800">
                       {it.desc}
                     </div>
                   </div>

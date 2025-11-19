@@ -12,9 +12,9 @@ export default function Footer() {
           <div className="md:col-span-5">
             <div className="flex items-center gap-3">
               <span className="inline-block rounded-sm border-2 border-white px-2 py-0.5 text-[11px] uppercase tracking-widest">2026</span>
-              <span className="text-[12px]">Millionaire Summit</span>
+              <span className="text-[13px]">Millionaire Summit</span>
             </div>
-            <p className="mt-4 max-w-md text-[13px] text-neutral-300">
+            <p className="mt-4 max-w-md text-[14px] text-neutral-300">
               A day of knowledge, high-value connections, and recognition. Join leaders shaping the next decade.
             </p>
           </div>
@@ -22,8 +22,8 @@ export default function Footer() {
           <div className="md:col-span-7">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
               <div>
-                <div className="text-[12px] font-semibold uppercase tracking-widest">Navigate</div>
-                <ul className="mt-3 space-y-2 text-[13px]">
+                <div className="text-[13px] font-semibold uppercase tracking-widest">Navigate</div>
+                <ul className="mt-3 space-y-2 text-[14px]">
                   <li><a href="#about" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">About</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#who-for" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Who For</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#agenda" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Agenda</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
@@ -44,16 +44,16 @@ export default function Footer() {
                 </ul>
               </div>
               <div>
-                <div className="text-[12px] font-semibold uppercase tracking-widest">Info</div>
-                <ul className="mt-3 space-y-2 text-[13px]">
+                <div className="text-[13px] font-semibold uppercase tracking-widest">Info</div>
+                <ul className="mt-3 space-y-2 text-[14px]">
                   <li className="text-neutral-300">Jan 3, 2026</li>
                   <li className="text-neutral-300">Chennai, India</li>
                   <li className="text-neutral-300">08:00 – 17:00 IST</li>
                 </ul>
               </div>
               <div>
-                <div className="text-[12px] font-semibold uppercase tracking-widest">Connect</div>
-                <ul className="mt-3 space-y-2 text-[13px]">
+                <div className="text-[13px] font-semibold uppercase tracking-widest">Connect</div>
+                <ul className="mt-3 space-y-2 text-[14px]">
                   <li>
                     <a
                       href="#tickets"
@@ -74,7 +74,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t-2 border-white/40 pt-6 text-[12px] md:flex-row">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t-2 border-white/40 pt-6 text-[13px] md:flex-row">
           <div className="text-neutral-300">© 2026 Millionaire Summit</div>
           <div className="flex items-center gap-6">
             <a href="#" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Terms</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a>

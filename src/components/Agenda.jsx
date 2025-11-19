@@ -37,7 +37,7 @@ export default function Agenda() {
       </div>
 
       <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-x-hidden">
-        <div className="hidden md:grid md:grid-cols-12 border-y-2 border-black bg-black/5 text-[13px] lg:text-[14px] uppercase tracking-widest text-neutral-700">
+        <div className="hidden md:grid md:grid-cols-12 border-y-2 border-black bg-black/5 text-[14px] lg:text-[15px] uppercase tracking-widest text-neutral-700">
           <div className="col-span-3 px-8 lg:px-12 py-5">Theme</div>
           <div className="col-span-6 px-8 lg:px-12 py-5">Topic</div>
           <div className="col-span-2 px-8 lg:px-12 py-5">Speaker</div>
@@ -49,10 +49,10 @@ export default function Agenda() {
             <div key={idx} className="px-4 py-5 transition-colors duration-200 ease-out hover:bg-black/5">
               <div className="flex items-center justify-between gap-3">
                 <span className="inline-flex items-center rounded-sm border-2 border-black px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-widest">{it.theme}</span>
-                <div className="text-[15px] font-semibold">{it.time}</div>
+                <div className="text-[16px] font-semibold">{it.time}</div>
               </div>
               <div className="mt-3 text-[1.125rem] font-semibold leading-snug tracking-tight">{it.topic}</div>
-              <div className="mt-2 text-[13px] text-neutral-600">{it.speaker || '—'}</div>
+              <div className="mt-2 text-[14px] text-neutral-600">{it.speaker || '—'}</div>
             </div>
           ))}
         </div>
@@ -68,9 +68,9 @@ export default function Agenda() {
               </div>
               <div className="col-span-2 px-8 lg:px-12 py-8">
                 {it.speaker ? (
-                  <div className="text-[14px] font-medium">{it.speaker}</div>
+                  <div className="text-[15px] font-medium">{it.speaker}</div>
                 ) : (
-                  <div className="text-[12px] text-neutral-500">—</div>
+                  <div className="text-[13px] text-neutral-500">—</div>
                 )}
               </div>
               <div className="col-span-1 px-8 lg:px-12 py-8 text-right text-[15px] font-semibold">{it.time}</div>

@@ -60,7 +60,7 @@ export default function Hero() {
                 <h1 className="text-[clamp(2.6rem,6vw,4.4rem)] font-semibold leading-[1.02] tracking-tight">
                   Millionaire Summit & Awards 2026
                 </h1>
-                <p className="mt-4 max-w-2xl text-[15px] text-neutral-200 leading-relaxed">
+                <p className="mt-4 max-w-2xl text-[16px] text-neutral-200 leading-relaxed">
                   Let’s Begin This Year with Some Powerful Knowledge, Valuable Connection, and Power Packed Energy…
                 </p>
                 <div className="mt-5 flex gap-6">

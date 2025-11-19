@@ -13,6 +13,7 @@ import EventTheme from './components/EventTheme'
 import Sponsors from './components/Sponsors'
 import ClickSpark from './components/ClickSpark'
 import ApplyFormModal from './components/ApplyFormModal'
+import Tickets from './components/Tickets'
 import { FaTicketAlt } from 'react-icons/fa'
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId)
       lenis.destroy()
-       document.removeEventListener('click', handleAnchorClick)
+      document.removeEventListener('click', handleAnchorClick)
       clearInterval(intervalId)
       if (peekTimeout) clearTimeout(peekTimeout)
     }
@@ -113,6 +114,7 @@ function App() {
       />
       <WhoFor />
       <Agenda />
+      <Tickets onApplyClick={() => setIsGlobalApplyOpen(true)} />
       <Sponsors />
       <Footer />
 
