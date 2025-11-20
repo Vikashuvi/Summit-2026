@@ -136,8 +136,10 @@ export default function Tickets({ onApplyClick }) {
                   type="button"
                   disabled={isEnded || isLockedStandard}
                   onClick={() => {
-                    if (!isEnded && !isLockedStandard && onApplyClick) {
-                      onApplyClick(pass.id)
+                    if (!isEnded && !isLockedStandard) {
+                      if (typeof window !== 'undefined') {
+                        window.location.hash = `#/apply?ticket=${encodeURIComponent(pass.id)}`
+                      }
                     }
                   }}
                   className={`inline-flex w-full items-center justify-center rounded-sm border-2 px-4 py-2 text-[12px] font-semibold uppercase tracking-widest transition-colors duration-300 ${

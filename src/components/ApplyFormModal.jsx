@@ -16,7 +16,7 @@ const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
 const EARLY_BIRD_DEADLINE = new Date('2025-11-30T23:59:59+05:30')
 
-export default function ApplyFormModal({ open, onClose, ticketType }) {
+export default function ApplyFormModal({ open, onClose, ticketType, isPage = false }) {
   const now = new Date()
   const defaultTicket = now <= EARLY_BIRD_DEADLINE ? 'early-bird' : 'standard-pass'
   const selectedTicketType = ticketType || defaultTicket
@@ -34,7 +34,17 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
 
-  if (!open) return null
+  if (!open && !isPage) return null
+
+  const handleClose = () => {
+    if (isPage) {
+      if (typeof window !== 'undefined') {
+        window.location.hash = '#/'
+      }
+    } else if (onClose) {
+      onClose()
+    }
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -193,24 +203,43 @@ export default function ApplyFormModal({ open, onClose, ticketType }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div
+      className={
+        isPage
+          ? 'w-full flex items-center justify-center bg-neutral-50 px-4 py-10'
+          : 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4'
+      }
+    >
       <div className="relative w-full max-w-md rounded-sm border-2 border-black bg-white px-6 py-5 text-black shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
         
         {/* Header */}
         <div className="mb-3 flex items-center justify-between">
           <div>
-            <span className="inline-block rounded-sm border-2 border-black px-2 py-0.5 text-[10px] uppercase tracking-widest">
-              Apply Now
-            </span>
+            {!isPage && (
+              <span className="inline-block rounded-sm border-2 border-black px-2 py-0.5 text-[10px] uppercase tracking-widest">
+                Apply Now
+              </span>
+            )}
             <h2 className="mt-2 text-sm font-semibold">Share your details</h2>
           </div>
-          <button
-            type="button"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-sm border-2 border-black text-xs hover:bg-black hover:text-white transition-colors"
-            onClick={onClose}
-          >
-            ✕
-          </button>
+          {isPage ? (
+            <button
+              type="button"
+              className="inline-flex items-center rounded-sm border-2 border-black px-3 py-0.5 text-[10px] font-semibold uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+              onClick={handleClose}
+            >
+              Back
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-sm border-2 border-black text-xs hover:bg-black hover:text-white transition-colors"
+              onClick={handleClose}
+            >
+              
+              ✕
+            </button>
+          )}
         </div>
 
         {/* Selected ticket summary */}
