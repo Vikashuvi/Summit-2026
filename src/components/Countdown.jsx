@@ -32,15 +32,12 @@ export default function Countdown({ target = new Date(2026, 0, 3, 0, 0, 0) }) {
   }, [targetMs])
 
   return (
-    <section className="timer mx-auto my-14 max-w-6xl rounded-sm border-2 border-black bg-white px-5 py-6 md:px-8 md:py-8">
-      {/* Title with strokes */}
-      <div className="mb-6 flex items-center gap-3">
-        <div className="hidden h-[2px] flex-1 bg-black md:block" />
-        <h2 className="m-0 shrink-0 text-[clamp(1.25rem,2.3vw,1.6rem)] font-semibold leading-none tracking-tight">Event starts in</h2>
-        <div className="hidden h-[2px] flex-1 bg-black md:block" />
+    <section className="timer mx-auto my-16 max-w-5xl">
+      <div className="eventinh1">
+        <h2>Event starts in</h2>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 md:gap-4">
+      <div className="timer-boxes-container">
         <Box label="Days" value={time.d} />
         <Box label="Hours" value={time.h} />
         <Box label="Minutes" value={time.m} />
@@ -52,14 +49,9 @@ export default function Countdown({ target = new Date(2026, 0, 3, 0, 0, 0) }) {
 
 function Box({ label, value }) {
   return (
-    <div className="box flex flex-col">
-      <div className="flex items-center justify-center rounded-sm border-2 border-black bg-white px-3 py-6 md:px-4 md:py-8">
-        <span className="num font-sans text-[clamp(2rem,6vw,3.5rem)] font-semibold leading-none tracking-tight">{value}</span>
-      </div>
-      <div className="flex items-center justify-between border-b-2 border-black/60 px-1 py-2 text-[12px] text-neutral-700 md:text-[13px]">
-        <span className="uppercase tracking-[0.2em]">{label}</span>
-        <span className="h-[2px] w-6 bg-black" />
-      </div>
+    <div className="box">
+      <span className="num">{value}</span>
+      <span className="text">{label}</span>
     </div>
   )
 }
