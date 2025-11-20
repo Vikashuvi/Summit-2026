@@ -22,7 +22,7 @@ export default function Agenda() {
         <WavyBackground
           containerClassName="h-[180px] md:h-[240px]"
           className="flex h-full items-center justify-start px-4 md:px-6"
-          backgroundFill="#f5f5f5"
+          backgroundFill="#ffffff"
           waveOpacity={0.2}
           blur={8}
           speed="slow"
