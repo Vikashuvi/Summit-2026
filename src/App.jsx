@@ -12,6 +12,7 @@ import CurvedLoop from './components/ui/shadcn-io/curved-loop'
 import Footer from './components/Footer'
 import EventTheme from './components/EventTheme'
 import Sponsors from './components/Sponsors'
+import Speakers from './components/Speakers'
 import ClickSpark from './components/ClickSpark'
 import ApplyFormModal from './components/ApplyFormModal'
 import Tickets from './components/Tickets'
@@ -175,6 +176,7 @@ function App() {
           <Hero />
           <EventTheme />
           <About />
+          <Speakers />
           <ShortsHighlights />
           <Countdown />
           <CurvedLoop
