@@ -3,6 +3,7 @@ import Lenis from 'lenis'
 import './App.css'
 import Hero from './components/Hero'
 import About from './components/About'
+import ShortsHighlights from './components/ShortsHighlights'
 import Countdown from './components/Countdown'
 import WhoFor from './components/WhoFor'
 import Header from './components/Header'
@@ -174,6 +175,7 @@ function App() {
           <Hero />
           <EventTheme />
           <About />
+          <ShortsHighlights />
           <Countdown />
           <CurvedLoop
             marqueeText="Summit 2026 ✦"
