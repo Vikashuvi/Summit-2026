@@ -121,9 +121,14 @@ function App() {
               speed="slow"
               waveWidth={56}
             >
-              <h1 className="text-[min(12vw,5.5rem)] font-semibold leading-[0.9] tracking-tight text-black select-none uppercase">
-                {pageHeading}
-              </h1>
+              <div className="text-center">
+                <div className="text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-neutral-700 mb-2">
+                  Millionaire Summit & Awards 2026
+                </div>
+                <h1 className="text-[min(12vw,5.5rem)] font-semibold leading-[0.9] tracking-tight text-black select-none uppercase">
+                  {pageHeading}
+                </h1>
+              </div>
             </WavyBackground>
           </div>
           <div className="flex-1 flex items-center justify-center px-4 py-10">

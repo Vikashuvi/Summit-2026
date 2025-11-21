@@ -23,7 +23,7 @@ export default function Footer() {
                   <li><a href="#about" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">About</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#who-for" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Who For</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
                   <li><a href="#agenda" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Agenda</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
-                  <li><a href="#sponsors" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Sponsors</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li>
+                  {/* <li><a href="#sponsors" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Sponsors</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a></li> */}
                   <li>
                     <a
                       href="#tickets"
@@ -55,7 +55,6 @@ export default function Footer() {
                       <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
                     </a>
                   </li>
-                  <li><a href="#details" className="text-neutral-300 hover:text-white">Details</a></li>
                 </ul>
               </div>
             </div>
