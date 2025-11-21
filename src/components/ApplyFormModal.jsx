@@ -121,6 +121,15 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
                 razorpay_order_id: paymentResponse.razorpay_order_id,
                 razorpay_payment_id: paymentResponse.razorpay_payment_id,
                 razorpay_signature: paymentResponse.razorpay_signature,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                company: formData.company,
+                designation: formData.designation,
+                ticketType: selectedTicketType,
+                ticketLabel: selectedTicketLabel,
+                amount: paidAmount,
+                currency: paidCurrency,
               })
             })
 
