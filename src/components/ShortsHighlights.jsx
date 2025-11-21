@@ -53,8 +53,9 @@ const SHORTS = [
 
 export default function ShortsHighlights() {
   const scrollRef = useRef(null)
-  const [scrollValue, setScrollValue] = useState(0)
+  const [scrollValue, setScrollValue] = useState(0) // 0–100 slider percent
   const [maxScroll, setMaxScroll] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(true)
 
   useEffect(() => {
     const el = scrollRef.current
@@ -63,7 +64,12 @@ export default function ShortsHighlights() {
     const updateMaxScroll = () => {
       const max = Math.max(el.scrollWidth - el.clientWidth, 0)
       setMaxScroll(max)
-      setScrollValue(el.scrollLeft)
+      if (max > 0) {
+        const percent = (el.scrollLeft / max) * 100
+        setScrollValue(percent)
+      } else {
+        setScrollValue(0)
+      }
     }
 
     updateMaxScroll()
@@ -74,18 +80,31 @@ export default function ShortsHighlights() {
     }
   }, [])
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const check = () => {
+      setIsDesktop(window.innerWidth >= 768)
+    }
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   const handleScroll = () => {
+    if (!isDesktop) return
     const el = scrollRef.current
-    if (!el) return
-    setScrollValue(el.scrollLeft)
+    if (!el || maxScroll <= 0) return
+    const percent = (el.scrollLeft / maxScroll) * 100
+    setScrollValue(percent)
   }
 
   const handleSliderChange = (e) => {
     const el = scrollRef.current
-    if (!el) return
-    const next = Number(e.target.value)
-    setScrollValue(next)
-    el.scrollTo({ left: next, behavior: 'smooth' })
+    if (!el || maxScroll <= 0) return
+    const nextPercent = Number(e.target.value)
+    setScrollValue(nextPercent)
+    const nextLeft = (nextPercent / 100) * maxScroll
+    el.scrollLeft = nextLeft
   }
 
   return (
@@ -114,7 +133,8 @@ export default function ShortsHighlights() {
           className="flex gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {SHORTS.map((short) => {
-            const embedSrc = `https://www.youtube.com/embed/${short.id}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${short.id}`
+            const autoplayParam = isDesktop ? '1' : '0'
+            const embedSrc = `https://www.youtube.com/embed/${short.id}?autoplay=${autoplayParam}&mute=1&playsinline=1&controls=0&loop=1&playlist=${short.id}`
 
             return (
               <article
@@ -163,7 +183,7 @@ export default function ShortsHighlights() {
             )
           })}
         </div>
-        {maxScroll > 0 && (
+        {isDesktop && maxScroll > 0 && (
           <div className="mt-3 hidden md:block">
             <div className="flex items-center gap-3 rounded-md border-2 border-black bg-white px-3 py-2">
               <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-neutral-700">
@@ -172,7 +192,7 @@ export default function ShortsHighlights() {
               <input
                 type="range"
                 min={0}
-                max={maxScroll}
+                max={100}
                 value={scrollValue}
                 onChange={handleSliderChange}
                 className="h-1 flex-1 cursor-pointer appearance-none bg-neutral-200 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black"
