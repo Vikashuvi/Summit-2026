@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { MdOutlineArrowOutward } from 'react-icons/md'
 import sp1 from '../assets/speakers/sp1.png'
 import sp2 from '../assets/speakers/sp2.png'
 import sp3 from '../assets/speakers/sp3.png'
@@ -57,7 +58,7 @@ const SPEAKERS = [
   },
 ]
 
-export default function Speakers() {
+export default function Speakers({ onToggleScrollLock = () => {} }) {
   const [activeSpeaker, setActiveSpeaker] = useState(null)
   const [isClosing, setIsClosing] = useState(false)
 
@@ -73,6 +74,45 @@ export default function Speakers() {
       setIsClosing(false)
     }, 260)
   }
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+
+    if (activeSpeaker) {
+      const body = document.body
+      const html = document.documentElement
+      const previousBodyOverflow = body.style.overflow
+      const previousHtmlOverflow = html.style.overflow
+
+      body.style.overflow = 'hidden'
+      html.style.overflow = 'hidden'
+      onToggleScrollLock(true)
+
+      const preventScroll = (e) => {
+        e.preventDefault()
+      }
+
+      const preventScrollKeys = (e) => {
+        const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']
+        if (keys.includes(e.key)) {
+          e.preventDefault()
+        }
+      }
+
+      window.addEventListener('wheel', preventScroll, { passive: false })
+      window.addEventListener('touchmove', preventScroll, { passive: false })
+      window.addEventListener('keydown', preventScrollKeys, { passive: false })
+
+      return () => {
+        body.style.overflow = previousBodyOverflow
+        html.style.overflow = previousHtmlOverflow
+        onToggleScrollLock(false)
+        window.removeEventListener('wheel', preventScroll)
+        window.removeEventListener('touchmove', preventScroll)
+        window.removeEventListener('keydown', preventScrollKeys)
+      }
+    }
+  }, [activeSpeaker])
 
   return (
     <section id="speakers" className="mx-auto my-24 max-w-6xl px-6 md:px-10">
@@ -94,7 +134,7 @@ export default function Speakers() {
               key={idx}
               type="button"
               onClick={() => openSpeaker(speaker)}
-              className="flex flex-col border-2 border-black bg-white text-left focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+              className="group flex flex-col border-2 border-black bg-white text-left focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
             >
               <div className="relative w-full aspect-square overflow-hidden bg-neutral-100">
                 <img
@@ -103,12 +143,15 @@ export default function Speakers() {
                   className="h-full w-full object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-x-0 bottom-0 px-3 pb-3 pt-8 md:px-4 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent">
+                <div className="absolute inset-x-0 bottom-0 pl-3 pr-12 pb-3 pt-8 md:pl-4 md:pr-14 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent">
                   <div className="text-[0.95rem] md:text-[1.05rem] font-semibold tracking-tight text-white">
                     {speaker.name}
                   </div>
                   <div className="mt-1 text-[0.8rem] md:text-[0.9rem] text-neutral-200">
                     {speaker.role}
+                  </div>
+                  <div className="pointer-events-none absolute bottom-2 right-3 text-white md:bottom-3 md:right-4">
+                    <MdOutlineArrowOutward className="h-5 w-5 md:h-6 md:w-6 transform transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </div>
                 </div>
               </div>

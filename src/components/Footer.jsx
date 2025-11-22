@@ -62,10 +62,26 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-4 border-t-2 border-white/40 pt-6 text-[13px] md:flex-row">
-          <div className="text-neutral-300">© 2026 Millionaire Summit</div>
+          <div className="text-neutral-300"> 2026 Millionaire Summit</div>
           <div className="flex items-center gap-6">
-            <a href="#" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Terms</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a>
-            <a href="#" className="group relative inline-flex items-center text-white no-underline"><span className="relative z-10">Privacy</span><span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" /></a>
+            <a
+              href="#/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center text-white no-underline"
+            >
+              <span className="relative z-10">Terms & Conditions</span>
+              <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            </a>
+            <a
+              href="#/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center text-white no-underline"
+            >
+              <span className="relative z-10">Privacy Policy</span>
+              <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-white origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            </a>
           </div>
         </div>
       </div>

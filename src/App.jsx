@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Lenis from 'lenis'
 import './App.css'
 import Hero from './components/Hero'
@@ -19,10 +19,50 @@ import Tickets from './components/Tickets'
 import { WavyBackground } from './components/ui/wavy-background'
 import { FaTicketAlt } from 'react-icons/fa'
 
+function PlainTextPage({ title, src }) {
+  const [content, setContent] = useState('')
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+    fetch(src)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to load content')
+        return res.text()
+      })
+      .then((txt) => {
+        if (isMounted) setContent(txt)
+      })
+      .catch(() => {
+        if (isMounted) setError('Unable to load this document right now.')
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [src])
+
+  return (
+    <div className="min-h-screen bg-white text-black flex flex-col">
+      <main className="flex-1 px-4 py-10">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h1>
+          <pre className="whitespace-pre-wrap text-sm leading-relaxed text-neutral-900">
+            {error ? error : content || 'Loading...'}
+          </pre>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  )
+}
+
 function App() {
   const [isGlobalApplyOpen, setIsGlobalApplyOpen] = useState(false)
   const [isBadgeExpanded, setIsBadgeExpanded] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState(null)
+  const [isScrollLocked, setIsScrollLocked] = useState(false)
+  const scrollLockedRef = useRef(false)
   const [hash, setHash] = useState(() =>
     typeof window === 'undefined' ? '#/' : window.location.hash || '#/'
   )
@@ -34,6 +74,8 @@ function App() {
   }
 
   const isApplyPage = hash.startsWith('#/apply')
+  const isTermsPage = hash.startsWith('#/terms')
+  const isPrivacyPage = hash.startsWith('#/privacy')
 
   const getTicketFromHash = () => {
     if (!hash) return null
@@ -45,6 +87,10 @@ function App() {
   const initialTicketFromUrl = getTicketFromHash()
   const activeTicketId = initialTicketFromUrl || selectedTicket || 'early-bird'
   const pageHeading = TICKET_LABELS[activeTicketId] || 'Registration'
+
+  useEffect(() => {
+    scrollLockedRef.current = isScrollLocked
+  }, [isScrollLocked])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -68,7 +114,9 @@ function App() {
 
     let rafId
     const raf = (time) => {
-      lenis.raf(time)
+      if (!scrollLockedRef.current) {
+        lenis.raf(time)
+      }
       rafId = requestAnimationFrame(raf)
     }
     rafId = requestAnimationFrame(raf)
@@ -112,40 +160,47 @@ function App() {
   return (
     <ClickSpark sparkColor="#000000" sparkSize={10} sparkRadius={18} sparkCount={10} duration={500} extraScale={1.1}>
       {isApplyPage ? (
-        <div className="min-h-screen bg-neutral-50 flex flex-col">
-          <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-b-2 border-black bg-white">
-            <WavyBackground
-              containerClassName="h-[120px] md:h-[180px]"
-              className="flex h-full items-center justify-center px-4 md:px-6"
-              backgroundFill="white"
-              waveOpacity={0.35}
-              blur={8}
-              speed="slow"
-              waveWidth={56}
-            >
-              <div className="text-center">
-                <div className="text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-neutral-700 mb-2">
-                  Millionaire Summit & Awards 2026
+        <>
+          <div className="min-h-screen bg-neutral-50 flex flex-col">
+            <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-b-2 border-black bg-white">
+              <WavyBackground
+                containerClassName="h-[120px] md:h-[180px]"
+                className="flex h-full items-center justify-center px-4 md:px-6"
+                backgroundFill="white"
+                waveOpacity={0.35}
+                blur={8}
+                speed="slow"
+                waveWidth={56}
+              >
+                <div className="text-center">
+                  <div className="text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-neutral-700 mb-2">
+                    Millionaire Summit & Awards 2026
+                  </div>
+                  <h1 className="text-[min(12vw,5.5rem)] font-semibold leading-[0.9] tracking-tight text-black select-none uppercase">
+                    {pageHeading}
+                  </h1>
                 </div>
-                <h1 className="text-[min(12vw,5.5rem)] font-semibold leading-[0.9] tracking-tight text-black select-none uppercase">
-                  {pageHeading}
-                </h1>
-              </div>
-            </WavyBackground>
+              </WavyBackground>
+            </div>
+            <div className="flex-1 flex items-center justify-center px-4 py-10">
+              <ApplyFormModal
+                open={true}
+                onClose={() => {
+                  if (typeof window !== 'undefined') {
+                    window.location.hash = '#/'
+                  }
+                }}
+                ticketType={initialTicketFromUrl || selectedTicket}
+                isPage={true}
+              />
+            </div>
           </div>
-          <div className="flex-1 flex items-center justify-center px-4 py-10">
-            <ApplyFormModal
-              open={true}
-              onClose={() => {
-                if (typeof window !== 'undefined') {
-                  window.location.hash = '#/'
-                }
-              }}
-              ticketType={initialTicketFromUrl || selectedTicket}
-              isPage={true}
-            />
-          </div>
-        </div>
+          <Footer />
+        </>
+      ) : isTermsPage ? (
+        <PlainTextPage title="Terms and Conditions" src="/terms.txt" />
+      ) : isPrivacyPage ? (
+        <PlainTextPage title="Privacy Policy" src="/privacy.txt" />
       ) : (
         <>
           {/* Global floating Apply badge: red ticket container on right edge */}
@@ -176,7 +231,7 @@ function App() {
           <Hero />
           <EventTheme />
           <About />
-          <Speakers />
+          <Speakers onToggleScrollLock={setIsScrollLocked} />
           <ShortsHighlights />
           <Countdown />
           <CurvedLoop

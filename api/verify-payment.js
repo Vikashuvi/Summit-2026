@@ -147,6 +147,8 @@ export default async function handler(req, res) {
         await transporter.sendMail({
           from: process.env.TICKET_FROM_EMAIL || process.env.GMAIL_USER,
           to: email,
+          replyTo: 'info@executivescollaboration.com, info@touchmarkdes.com',
+          cc: 'info@touchmarkdes.com',
           subject: 'Your Millionaire Summit 2026 Pass is Confirmed',
           text: textBody,
           html: htmlBody,
