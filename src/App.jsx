@@ -67,12 +67,6 @@ function App() {
     typeof window === 'undefined' ? '#/' : window.location.hash || '#/'
   )
 
-  const TICKET_LABELS = {
-    'early-bird': 'Early Bird Pass',
-    'standard-pass': 'Standard Pass',
-    'vip-pass': 'VIP Pass',
-  }
-
   const isApplyPage = hash.startsWith('#/apply')
   const isTermsPage = hash.startsWith('#/terms')
   const isPrivacyPage = hash.startsWith('#/privacy')
@@ -85,8 +79,7 @@ function App() {
   }
 
   const initialTicketFromUrl = getTicketFromHash()
-  const activeTicketId = initialTicketFromUrl || selectedTicket || 'early-bird'
-  const pageHeading = TICKET_LABELS[activeTicketId] || 'Registration'
+  const pageHeading = 'Privacy Policy'
 
   useEffect(() => {
     scrollLockedRef.current = isScrollLocked
