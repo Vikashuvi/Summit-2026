@@ -130,13 +130,95 @@ app.post('/verify-payment', async (req, res) => {
         const safeAmount = amount != null ? amount : ''
         const safeCurrency = currency || 'INR'
 
-        const textBody = `Hi ${safeName},\n\nThank you for purchasing a pass for Millionaire Summit 2026.\nYour payment has been received successfully and your seat is confirmed.\n\nTicket type: ${safeTicketLabel}\nAmount paid: ${safeAmount} ${safeCurrency}\n\nWe2re excited to see you at Millionaire Summit 2026!\n\nBest regards,\nMillionaire Summit Team`
+        const textBody = `Hi ${safeName},\n\nThank you for purchasing a pass for Millionaire Summit 2026. Your payment has been received successfully and your seat is confirmed.\n\nTicket type: ${safeTicketLabel}\nAmount paid: ${safeAmount} ${safeCurrency}\n\nEvent details:\nDate: Jan 3, 2026 · Saturday\nTime: 08:00 – 17:00 IST\nVenue: Hotel Green Park, Chennai\n\nWe are excited to see you at Millionaire Summit 2026!\n\nBest regards,\nMillionaire Summit Team`
 
-        const htmlBody = `<p>Hi ${safeName},</p>
-<p>Thank you for purchasing a pass for <strong>Millionaire Summit 2026</strong>.<br />Your payment has been received successfully and your seat is confirmed.</p>
-<p><strong>Ticket type:</strong> ${safeTicketLabel}<br /><strong>Amount paid:</strong> ${safeAmount} ${safeCurrency}</p>
-<p>We2re excited to see you at Millionaire Summit 2026!</p>
-<p>Best regards,<br /><strong>Millionaire Summit Team</strong></p>`
+        const htmlBody = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your Millionaire Summit 2026 Pass is Confirmed</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f3f3f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f3f3;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:2px solid #000000;">
+            <tr>
+              <td style="padding:20px 24px 12px 24px;border-bottom:2px solid #000000;background-color:#ffffff;">
+                <div style="font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:#666666;font-weight:600;">
+                  Millionaire Summit 2026
+                </div>
+                <h1 style="margin:8px 0 0 0;font-size:22px;line-height:1.3;font-weight:700;color:#000000;">
+                  Your pass is confirmed
+                </h1>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:12px 24px 0 24px;">
+                <span style="display:inline-block;border:2px solid #000000;background-color:#000000;color:#ffffff;padding:6px 14px;font-size:10px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;">
+                  Pass Confirmed
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:16px 24px 20px 24px;font-size:14px;line-height:1.7;color:#111111;">
+                <p style="margin:0 0 12px 0;">
+                  Hi ${safeName},
+                </p>
+                <p style="margin:0 0 12px 0;">
+                  Thank you for purchasing a pass for Millionaire Summit 2026. Your payment has been received successfully and your seat is confirmed.
+                </p>
+
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:16px 0 12px 0;font-size:14px;color:#111111;">
+                  <tr>
+                    <td style="padding:0 16px 4px 0;font-weight:600;">Ticket type:</td>
+                    <td style="padding:0 0 4px 0;">${safeTicketLabel}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 16px 0 0;font-weight:600;">Amount paid:</td>
+                    <td style="padding:0;">${safeAmount} ${safeCurrency}</td>
+                  </tr>
+                </table>
+
+                <div style="margin:20px 0 12px 0;border:2px solid #000000;border-radius:10px;overflow:hidden;">
+                  <div style="padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.1);background-color:#fafafa;">
+                    <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#777777;font-weight:600;margin-bottom:4px;">Date</div>
+                    <div style="font-size:14px;font-weight:600;color:#111111;">Jan 3, 2026 · Saturday</div>
+                  </div>
+                  <div style="padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.1);background-color:#ffffff;">
+                    <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#777777;font-weight:600;margin-bottom:4px;">Time</div>
+                    <div style="font-size:14px;font-weight:600;color:#111111;">08:00 – 17:00 IST</div>
+                  </div>
+                  <div style="padding:10px 14px;background-color:#fafafa;">
+                    <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#777777;font-weight:600;margin-bottom:4px;">Venue</div>
+                    <div style="font-size:14px;font-weight:600;color:#111111;">Hotel Green Park, Chennai</div>
+                  </div>
+                </div>
+
+                <p style="margin:16px 0 12px 0;">
+                  We are excited to see you at Millionaire Summit 2026!
+                </p>
+
+                <p style="margin:16px 0 4px 0;">
+                  Best regards,<br />
+                  <span>Millionaire Summit Team</span>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:10px 24px 16px 24px;border-top:2px solid #000000;font-size:11px;line-height:1.5;color:#555555;">
+                <p style="margin:0;">This is an automated confirmation email for your Millionaire Summit 2026 pass.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
 
         await transporter.sendMail({
           from: process.env.TICKET_FROM_EMAIL || process.env.GMAIL_USER,
