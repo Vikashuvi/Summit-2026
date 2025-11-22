@@ -1,3 +1,5 @@
+import logo from '../assets/logo-white.png'
+
 export default function Footer() {
 
   return (
@@ -7,8 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:items-start">
           <div className="md:col-span-5">
             <div className="flex items-center gap-3">
-              <span className="inline-block rounded-sm border-2 border-white px-2 py-0.5 text-[11px] uppercase tracking-widest">2026</span>
-              <span className="text-[13px]">Millionaire Summit</span>
+              <img src={logo} alt="Millionaire Summit" className="h-8 w-auto" />
             </div>
             <p className="mt-4 max-w-md text-[14px] text-neutral-300">
               A day of knowledge, high-value connections, and recognition. Join leaders shaping the next decade.

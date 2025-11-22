@@ -1,3 +1,5 @@
+import logo from '../assets/logo.png';
+
 export default function Header() {
 
   return (
@@ -6,8 +8,7 @@ export default function Header() {
         <div className="border-y-2 border-black">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 md:px-10">
             <div className="flex items-center gap-3">
-              <span className="inline-block rounded-sm border-2 border-black px-2 py-0.5 text-[11px] uppercase tracking-widest">2026</span>
-              <span className="text-[13px]">Millionaire Summit</span>
+              <img src={logo} alt="Millionaire Summit" className="h-8 w-auto" />
             </div>
             <nav aria-label="Primary" className="hidden md:block">
               <ul className="flex items-center gap-6 m-0 p-0">
