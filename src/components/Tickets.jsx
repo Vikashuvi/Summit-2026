@@ -32,7 +32,7 @@ export default function Tickets({ onApplyClick }) {
     },
     {
       id: 'vip-pass',
-      label: 'EXCLUSIVE',
+      label: 'EXCLUSIVES VIP PASSES',
       name: 'VIP Pass',
       price: '10,000 INR',
       features: [
@@ -41,6 +41,8 @@ export default function Tickets({ onApplyClick }) {
         'Meet & greet',
         'All Standard benefits',
         'Gift hamper',
+        'Only 10 spots available',
+        'VIP Seating with Millionaires at The Roundtable',
       ],
       featured: true,
     },
@@ -66,6 +68,9 @@ export default function Tickets({ onApplyClick }) {
               ? 'Early Bird pricing available until 30 November'
               : 'Early Bird is sold out · Current pricing starts at 5,000 INR'}
           </p>
+          <div className="mt-2 inline-flex rounded-full border-2 border-red-600 bg-red-600 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-white">
+            No spot registrations
+          </div>
         </div>
         <p className="max-w-md text-[1.05rem] leading-relaxed text-neutral-700">
           Join us for an unforgettable summit designed for ambitious founders and leaders. Pick the pass that best
@@ -90,11 +95,17 @@ export default function Tickets({ onApplyClick }) {
               <div>
                 {pass.label && (
                   <div
-                    className={`mb-4 inline-flex rounded-full border-2 border-black px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] ${
+                    className={`mb-1 inline-flex rounded-full border-2 border-black px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] ${
                       isEnded ? 'bg-neutral-200 text-neutral-700 border-neutral-500' : 'bg-black text-white'
                     }`}
                   >
                     {isEnded ? 'SOLD OUT' : pass.label}
+                  </div>
+                )}
+
+                {pass.id === 'vip-pass' && !isEnded && (
+                  <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.25em] text-red-500">
+                    Only few spots available
                   </div>
                 )}
 

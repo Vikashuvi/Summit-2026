@@ -1,17 +1,21 @@
 import { WavyBackground } from "./ui/wavy-background";
 
 const ITEMS = [
-  { theme: 'Opening', topic: 'Exclusive Private Breakfast with Platinum Delegates', speaker: '', time: '08:00 AM' },
-  { theme: 'Registration', topic: 'Registration', speaker: '', time: '09:00 AM' },
-  { theme: 'Networking', topic: 'Networking with Tea and Cookies', speaker: '', time: '09:30 AM' },
-  { theme: 'Ceremony', topic: 'Kick Starting the Event with Lamp Lighting', speaker: '', time: '10:00 AM' },
-  { theme: 'Panel', topic: 'The Millionaire Panel Session', speaker: '', time: '11:00 AM' },
-  { theme: 'Lunch', topic: 'Lunch with Networking', speaker: '', time: '01:00 PM' },
-  { theme: 'Fun', topic: 'Little Happy Hours', speaker: '', time: '02:30 PM' },
-  { theme: 'Keynote', topic: 'Keynote', speaker: '', time: '03:00 PM' },
-  { theme: 'Panel', topic: 'India’s Future GCC Panel Session', speaker: '', time: '04:00 PM' },
-  { theme: 'Networking', topic: 'Networking with Hi-Tea', speaker: '', time: '05:00 PM' },
-]
+  { theme: 'Opening', topic: 'Exclusive Private Breakfast with Platinum Delegates', speaker: '', time: '07:00 AM' },
+  { theme: 'Registration', topic: 'Delegates Registration', speaker: '', time: '08:00 AM' },
+  { theme: 'Networking', topic: 'Brew, Bites, and Networking w/ Card Exchanges', speaker: '', time: '08:30 AM' },
+  { theme: 'Gathering', topic: 'Assembling for the Gathering', speaker: '', time: '09:00 AM' },
+  { theme: 'Ceremony', topic: 'Opening Note: Executives Collaboration Event with Lamp Lighting', speaker: '', time: '09:15 AM' },
+  { theme: 'Keynote', topic: 'Beyond Success and How Millionaires Build Legacy, Leadership and Long-term Impact', speaker: '', time: '09:25 AM' },
+  { theme: 'Keynote', topic: 'The Power Keynote', speaker: '', time: '11:30 AM' },
+  { theme: 'Recognition', topic: 'Recognition, Triumphs & Trophies', speaker: '', time: '12:30 PM' },
+  { theme: 'Lunch', topic: 'The Mid-Day Business Lunch where conversations continue over cuisine, network, reflect, and connect in a more relaxed setting.', speaker: '', time: '01:00 PM' },
+  { theme: 'Wellness', topic: 'Fitness Energizer', speaker: '', time: '01:45 PM' },
+  { theme: 'Fun', topic: 'Some Happy Hours', speaker: '', time: '02:00 PM' },
+  { theme: 'Panel', topic: 'India’s Future GCC Panel Session', speaker: '', time: '02:30 PM' },
+  { theme: 'Keynote', topic: 'Keynote', speaker: '', time: '03:30 PM' },
+  { theme: 'Networking', topic: 'The Coffee Connection – A networking session powered by caffeine and conversation, meet peers, share ideas, and spark new collaborations.', speaker: '', time: '04:30 PM' },
+];
 
 export default function Agenda() {
   return (
