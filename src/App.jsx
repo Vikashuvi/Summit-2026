@@ -43,10 +43,29 @@ function PlainTextPage({ title, src }) {
   }, [src])
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col">
+    <div className="min-h-screen bg-neutral-50 text-black flex flex-col">
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-b-2 border-black bg-white">
+        <WavyBackground
+          containerClassName="h-[120px] md:h-[180px]"
+          className="flex h-full items-center justify-center px-4 md:px-6"
+          backgroundFill="white"
+          waveOpacity={0.35}
+          blur={8}
+          speed="slow"
+          waveWidth={56}
+        >
+          <div className="text-center">
+            <div className="text-xs md:text-sm font-semibold tracking-[0.25em] uppercase text-neutral-700 mb-2">
+              Millionaire Summit & Awards 2026
+            </div>
+            <h1 className="text-[min(9vw,3.5rem)] font-semibold leading-[0.95] tracking-tight text-black select-none uppercase">
+              {title}
+            </h1>
+          </div>
+        </WavyBackground>
+      </div>
       <main className="flex-1 px-4 py-10">
         <div className="mx-auto max-w-3xl">
-          <h1 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h1>
           <pre className="whitespace-pre-wrap text-sm leading-relaxed text-neutral-900">
             {error ? error : content || 'Loading...'}
           </pre>
@@ -67,6 +86,12 @@ function App() {
     typeof window === 'undefined' ? '#/' : window.location.hash || '#/'
   )
 
+  const TICKET_LABELS = {
+    'early-bird': 'Early Bird Pass',
+    'standard-pass': 'Standard Pass',
+    'vip-pass': 'VIP Pass',
+  }
+
   const isApplyPage = hash.startsWith('#/apply')
   const isTermsPage = hash.startsWith('#/terms')
   const isPrivacyPage = hash.startsWith('#/privacy')
@@ -79,7 +104,8 @@ function App() {
   }
 
   const initialTicketFromUrl = getTicketFromHash()
-  const pageHeading = 'Privacy Policy'
+  const activeTicketId = initialTicketFromUrl || selectedTicket || 'early-bird'
+  const pageHeading = TICKET_LABELS[activeTicketId] || 'Registration'
 
   useEffect(() => {
     scrollLockedRef.current = isScrollLocked
