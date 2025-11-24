@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { MdOutlineArrowOutward } from 'react-icons/md'
 import sp1 from '../assets/speakers/sp1.png'
 import sp2 from '../assets/speakers/sp2.png'
@@ -58,6 +59,12 @@ const SPEAKERS = [
 ]
 
 export default function Speakers() {
+  const [activeIndex, setActiveIndex] = useState(null)
+
+  const handleCardClick = (idx) => {
+    setActiveIndex((current) => (current === idx ? null : idx))
+  }
+
   return (
     <section id="speakers" className="mx-auto my-24 max-w-6xl px-6 md:px-10">
       <div className="mb-10">
@@ -78,7 +85,10 @@ export default function Speakers() {
               key={idx}
               className="group relative flex flex-col border-2 border-black bg-white overflow-hidden"
             >
-              <div className="relative w-full aspect-square overflow-hidden bg-neutral-100">
+              <div
+                className="relative w-full aspect-square overflow-hidden bg-neutral-100"
+                onClick={() => handleCardClick(idx)}
+              >
                 <img
                   src={speaker.src}
                   alt={speaker.name}
@@ -86,7 +96,13 @@ export default function Speakers() {
                   loading="lazy"
                 />
                 {/* Default overlay with name and role */}
-                <div className="absolute inset-x-0 bottom-0 pl-3 pr-12 pb-3 pt-8 md:pl-4 md:pr-14 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent transition-opacity duration-300 group-hover:opacity-0">
+                <div
+                  className={`absolute inset-x-0 bottom-0 pl-3 pr-12 pb-3 pt-8 md:pl-4 md:pr-14 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent transition-opacity duration-300 ${
+                    activeIndex === idx
+                      ? 'opacity-0'
+                      : 'opacity-100 group-hover:opacity-0'
+                  }`}
+                >
                   <div className="text-[0.95rem] md:text-[1.05rem] font-semibold tracking-tight text-white">
                     {speaker.name}
                   </div>
@@ -98,8 +114,14 @@ export default function Speakers() {
                   </div>
                 </div>
 
-                {/* Bio overlay - shown on hover */}
-                <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-4 md:p-5">
+                {/* Bio overlay - shown on hover or tap */}
+                <div
+                  className={`absolute inset-0 bg-black/90 transition-opacity duration-300 flex flex-col justify-center p-4 md:p-5 ${
+                    activeIndex === idx
+                      ? 'opacity-100'
+                      : 'opacity-0 group-hover:opacity-100'
+                  }`}
+                >
                   <div className="overflow-y-auto max-h-full">
                     <div className="text-[0.95rem] md:text-[1.05rem] font-semibold tracking-tight text-white mb-2">
                       {speaker.name}
