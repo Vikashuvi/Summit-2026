@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
 import heroVideo from '../assets/Summit.mp4'
+import heroPoster from '../assets/logo-blue.png'
 
 // Replace with your final hero image(s)
-const IMAGES = [
-  'https://images.unsplash.com/photo-1515165562835-c4c3b96dd3c6?q=80&w=1600&auto=format&fit=crop',
-]
+const IMAGES = [heroPoster]
 
 export default function Hero() {
   const current = useMemo(() => IMAGES[0], [])
