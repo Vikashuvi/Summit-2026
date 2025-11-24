@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { MdOutlineArrowOutward } from 'react-icons/md'
 import sp1 from '../assets/speakers/sp1.png'
 import sp2 from '../assets/speakers/sp2.png'
@@ -58,62 +57,7 @@ const SPEAKERS = [
   },
 ]
 
-export default function Speakers({ onToggleScrollLock = () => {} }) {
-  const [activeSpeaker, setActiveSpeaker] = useState(null)
-  const [isClosing, setIsClosing] = useState(false)
-
-  const openSpeaker = (speaker) => {
-    setActiveSpeaker(speaker)
-    setIsClosing(false)
-  }
-
-  const handleClose = () => {
-    setIsClosing(true)
-    setTimeout(() => {
-      setActiveSpeaker(null)
-      setIsClosing(false)
-    }, 260)
-  }
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return
-
-    if (activeSpeaker) {
-      const body = document.body
-      const html = document.documentElement
-      const previousBodyOverflow = body.style.overflow
-      const previousHtmlOverflow = html.style.overflow
-
-      body.style.overflow = 'hidden'
-      html.style.overflow = 'hidden'
-      onToggleScrollLock(true)
-
-      const preventScroll = (e) => {
-        e.preventDefault()
-      }
-
-      const preventScrollKeys = (e) => {
-        const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']
-        if (keys.includes(e.key)) {
-          e.preventDefault()
-        }
-      }
-
-      window.addEventListener('wheel', preventScroll, { passive: false })
-      window.addEventListener('touchmove', preventScroll, { passive: false })
-      window.addEventListener('keydown', preventScrollKeys, { passive: false })
-
-      return () => {
-        body.style.overflow = previousBodyOverflow
-        html.style.overflow = previousHtmlOverflow
-        onToggleScrollLock(false)
-        window.removeEventListener('wheel', preventScroll)
-        window.removeEventListener('touchmove', preventScroll)
-        window.removeEventListener('keydown', preventScrollKeys)
-      }
-    }
-  }, [activeSpeaker])
-
+export default function Speakers() {
   return (
     <section id="speakers" className="mx-auto my-24 max-w-6xl px-6 md:px-10">
       <div className="mb-10">
@@ -130,20 +74,19 @@ export default function Speakers({ onToggleScrollLock = () => {} }) {
       <div className="rounded-md border-2 border-black bg-white p-4 md:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0">
           {SPEAKERS.map((speaker, idx) => (
-            <button
+            <div
               key={idx}
-              type="button"
-              onClick={() => openSpeaker(speaker)}
-              className="group flex flex-col border-2 border-black bg-white text-left focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
+              className="group relative flex flex-col border-2 border-black bg-white overflow-hidden"
             >
               <div className="relative w-full aspect-square overflow-hidden bg-neutral-100">
                 <img
                   src={speaker.src}
                   alt={speaker.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-x-0 bottom-0 pl-3 pr-12 pb-3 pt-8 md:pl-4 md:pr-14 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent">
+                {/* Default overlay with name and role */}
+                <div className="absolute inset-x-0 bottom-0 pl-3 pr-12 pb-3 pt-8 md:pl-4 md:pr-14 md:pb-4 md:pt-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent transition-opacity duration-300 group-hover:opacity-0">
                   <div className="text-[0.95rem] md:text-[1.05rem] font-semibold tracking-tight text-white">
                     {speaker.name}
                   </div>
@@ -151,82 +94,40 @@ export default function Speakers({ onToggleScrollLock = () => {} }) {
                     {speaker.role}
                   </div>
                   <div className="pointer-events-none absolute bottom-2 right-3 text-white md:bottom-3 md:right-4">
-                    <MdOutlineArrowOutward className="h-5 w-5 md:h-6 md:w-6 transform transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    <MdOutlineArrowOutward className="h-5 w-5 md:h-6 md:w-6 transform transition-transform duration-300 ease-out" />
+                  </div>
+                </div>
+
+                {/* Bio overlay - shown on hover */}
+                <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-4 md:p-5">
+                  <div className="overflow-y-auto max-h-full">
+                    <div className="text-[0.95rem] md:text-[1.05rem] font-semibold tracking-tight text-white mb-2">
+                      {speaker.name}
+                    </div>
+                    <div className="text-[0.75rem] md:text-[0.8rem] text-neutral-300 mb-3">
+                      {speaker.role}
+                    </div>
+                    {speaker.stat && (
+                      <div className="inline-flex rounded-full border border-white/30 bg-white/10 px-2 py-1 text-[0.6rem] md:text-[0.65rem] font-semibold uppercase tracking-wider text-white mb-3">
+                        {speaker.stat}
+                      </div>
+                    )}
+                    <div className="text-[0.75rem] md:text-[0.82rem] leading-relaxed text-neutral-200">
+                      {speaker.bio
+                        ? speaker.bio.split('\n\n').map((paragraph, idx) => (
+                          <p key={idx} className={idx === 0 ? '' : 'mt-2'}>
+                            {paragraph}
+                          </p>
+                        ))
+                        : null}
+                    </div>
                   </div>
                 </div>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       </div>
-
-      {activeSpeaker && (
-        <div
-          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 speaker-modal-overlay ${
-            isClosing ? 'speaker-modal-overlay-closing' : ''
-          }`}
-        >
-          <div
-            className="absolute inset-0"
-            onClick={handleClose}
-          />
-
-          <div
-            className={`relative z-10 w-full max-w-2xl rounded-md border-2 border-black bg-white shadow-[0_20px_0_0_#000] max-h-[90vh] overflow-y-auto speaker-modal-card ${
-              isClosing ? 'speaker-modal-card-closing' : ''
-            }`}
-          >
-            <div className="flex items-start justify-between border-b-2 border-black px-5 py-4 md:px-6">
-              <div>
-                <div className="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-neutral-600">
-                  Summit 2026 Speaker
-                </div>
-                <h3 className="mt-1 text-[1.5rem] font-semibold tracking-tight text-black">
-                  {activeSpeaker.name}
-                </h3>
-                <p className="mt-1 text-[0.95rem] text-neutral-700">
-                  {activeSpeaker.role}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={handleClose}
-                className="ml-4 inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-black bg-black text-white text-sm font-semibold leading-none"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="px-5 pb-5 pt-4 md:px-6 md:pb-6 md:pt-5">
-              {activeSpeaker.stat && (
-                <div className="inline-flex rounded-full border-2 border-black bg-black px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.25em] text-white">
-                  {activeSpeaker.stat}
-                </div>
-              )}
-
-              <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)] md:items-start">
-                <div className="overflow-hidden rounded-md border-2 border-black bg-neutral-100">
-                  <img
-                    src={activeSpeaker.src}
-                    alt={activeSpeaker.name}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-
-                <div className="text-[0.98rem] leading-relaxed text-neutral-800">
-                  {activeSpeaker.bio
-                    ? activeSpeaker.bio.split('\n\n').map((paragraph, idx) => (
-                        <p key={idx} className={idx === 0 ? '' : 'mt-3'}>
-                          {paragraph}
-                        </p>
-                      ))
-                    : null}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   )
 }
