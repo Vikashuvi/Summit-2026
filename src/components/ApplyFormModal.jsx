@@ -8,10 +8,12 @@ const TICKET_LABELS = {
 }
 
 const TICKET_PRICES = {
-  'early-bird': '3,500 INR',
-  'standard-pass': '5,000 INR',
-  'vip-pass': '10,000 INR',
+  'early-bird': 3500,
+  'standard-pass': 5000,
+  'vip-pass': 10000,
 }
+
+const CONVENIENCE_FEE_PERCENT = 2
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
 const EARLY_BIRD_DEADLINE = new Date('2025-11-30T23:59:59+05:30')
@@ -21,7 +23,13 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
   const defaultTicket = now <= EARLY_BIRD_DEADLINE ? 'early-bird' : 'standard-pass'
   const selectedTicketType = ticketType || defaultTicket
   const selectedTicketLabel = TICKET_LABELS[selectedTicketType] || 'Summit Ticket'
-  const selectedTicketPrice = TICKET_PRICES[selectedTicketType] || ''
+
+  // Calculate prices with convenience fee
+  const basePrice = TICKET_PRICES[selectedTicketType] || 0
+  const convenienceFee = Math.round(basePrice * (CONVENIENCE_FEE_PERCENT / 100))
+  const totalPrice = basePrice + convenienceFee
+
+  const formatPrice = (price) => `₹${price.toLocaleString('en-IN')}`
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -171,10 +179,10 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
 
             const result = await sheetResponse.text()
             console.log('Response text:', result)
-            
+
             setMessage('Application submitted successfully!')
             setMessageType('success')
-            
+
             // Clear form
             setFormData({
               name: '',
@@ -220,7 +228,7 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
       }
     >
       <div className="relative w-full max-w-md rounded-sm border-2 border-black bg-white px-6 py-5 text-black shadow-[6px_6px_0_0_rgba(0,0,0,1)]">
-        
+
         {/* Header */}
         <div className="mb-3 flex items-center justify-between">
           <div>
@@ -245,21 +253,32 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
               className="inline-flex h-7 w-7 items-center justify-center rounded-sm border-2 border-black text-xs hover:bg-black hover:text-white transition-colors"
               onClick={handleClose}
             >
-              
+
               ✕
             </button>
           )}
         </div>
 
         {/* Selected ticket summary */}
-        <div className="mb-4 rounded-sm border-2 border-dashed border-black px-3 py-2 text-[11px] uppercase tracking-widest flex items-center justify-between">
-          <span className="mr-3">{selectedTicketLabel}</span>
-          {selectedTicketPrice && <span className="font-semibold">{selectedTicketPrice}</span>}
+        <div className="mb-4 rounded-sm border-2 border-black bg-neutral-50 px-3 py-3">
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-widest border-b-2 border-dashed border-black pb-2">
+            {selectedTicketLabel}
+          </div>
+          <div className="space-y-1 text-[11px]">
+            <div className="flex items-center justify-between">
+              <span>Base Price</span>
+              <span className="font-medium">{formatPrice(basePrice)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Convenience Fee</span>
+              <span className="font-medium">{CONVENIENCE_FEE_PERCENT}%</span>
+            </div>
+          </div>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3 text-[12px]">
-          
+
           <div>
             <label className="mb-1 block text-[11px] uppercase tracking-widest">Name</label>
             <input
@@ -348,13 +367,12 @@ export default function ApplyFormModal({ open, onClose, ticketType, isPage = fal
 
           {message && (
             <div
-              className={`mt-3 text-center text-[11px] font-medium px-3 py-2 rounded-sm border-2 ${
-                messageType === 'success'
-                  ? 'border-green-600 text-green-700 bg-green-50'
-                  : messageType === 'error'
+              className={`mt-3 text-center text-[11px] font-medium px-3 py-2 rounded-sm border-2 ${messageType === 'success'
+                ? 'border-green-600 text-green-700 bg-green-50'
+                : messageType === 'error'
                   ? 'border-red-600 text-red-700 bg-red-50'
                   : 'border-yellow-500 text-yellow-700 bg-yellow-50'
-              }`}
+                }`}
             >
               {message}
             </div>
