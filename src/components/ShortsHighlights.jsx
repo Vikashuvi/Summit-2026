@@ -133,7 +133,7 @@ export default function ShortsHighlights() {
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-            className="h-full w-full scale-[1.02] transform transition-transform duration-500 group-hover:scale-[1.06] pointer-events-none"
+            className={`h-full w-full scale-[1.02] transform transition-transform duration-500 group-hover:scale-[1.06] ${isDesktop ? 'pointer-events-none' : ''}`}
           />
 
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40 opacity-70 transition-opacity duration-300 group-hover:opacity-40" />
@@ -191,7 +191,11 @@ export default function ShortsHighlights() {
       <div className="relative">
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex gap-5 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x] [-webkit-overflow-scrolling:touch]"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            touchAction: 'pan-x pan-y'
+          }}
         >
           {SHORTS.map(renderCard)}
         </div>
